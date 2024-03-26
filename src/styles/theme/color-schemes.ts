@@ -93,7 +93,7 @@ export const colorSchemes = {
       },
       info: {
         ...shakespeare,
-        light: shakespeare[400],
+        light: neonBlue[500],
         main: shakespeare[500],
         dark: shakespeare[600],
         contrastText: 'var(--mui-palette-common-white)',
