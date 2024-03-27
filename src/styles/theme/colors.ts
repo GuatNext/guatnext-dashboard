@@ -28,6 +28,7 @@ export const kepple = {
   950: '#042f2c',
 } satisfies PaletteRange;
 
+// 500 was edited to main GuatNext orange color. 
 export const neonBlue = {
   50: '#ecf0ff',
   100: '#dde3ff',
@@ -84,6 +85,7 @@ export const shakespeare = {
   950: '#082f44',
 } satisfies PaletteRange;
 
+// 950 was edited to main GuatNext dark color. 
 export const stormGrey = {
   50: '#f9fafb',
   100: '#f1f1f4',
