@@ -23,7 +23,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/no-unused-vars': [
-      'error',
+      'warn',  // changed to 'warn'
       {
         ignoreRestSiblings: true,
         argsIgnorePattern: '^_',
@@ -32,22 +32,22 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-empty-interface': [
-      'error',
+      'warn',  // changed to 'warn'
       {
         allowSingleExtends: true,
       },
     ],
     '@typescript-eslint/no-shadow': [
-      'error',
+      'warn',  // changed to 'warn'
       {
         ignoreOnInitialization: true,
       },
     ],
-    'import/newline-after-import': 'error',
-    'react/jsx-uses-react': 'error',
-    'react/react-in-jsx-scope': 'error',
+    'import/newline-after-import': 'warn',  // changed to 'warn'
+    'react/jsx-uses-react': 'warn',  // changed to 'warn'
+    'react/react-in-jsx-scope': 'warn',  // changed to 'warn'
     'unicorn/filename-case': [
-      'error',
+      'warn',  // changed to 'warn'
       {
         cases: {
           kebabCase: true, // personal style

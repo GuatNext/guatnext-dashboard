@@ -4,9 +4,6 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { config } from '@/config';
-import type { Metadata } from 'next';
-
 import { CheckCircle as CheckIcon } from '@phosphor-icons/react/dist/ssr/CheckCircle';
 import { XCircle as XIcon } from '@phosphor-icons/react/dist/ssr/XCircle';
 import { Hourglass as PendingIcon } from '@phosphor-icons/react/dist/ssr/Hourglass';
