@@ -39,6 +39,16 @@ export interface ResetPasswordParams {
 }
 
 class AuthClient {
+  async signUp(_: SignUpParams): Promise<{ error?: string }> {
+    // Make API request
+
+    // We do not handle the API, so we'll just generate a token and store it in localStorage.
+    const token = generateToken();
+    localStorage.setItem('custom-auth-token', token);
+
+    return {};
+  }
+
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { email, password } = params;
     const auth = getAuth();
