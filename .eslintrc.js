@@ -22,13 +22,39 @@ module.exports = {
     },
   },
   rules: {
-    '@typescript-eslint/no-unused-vars':'off',
-    '@typescript-eslint/no-empty-interface': 'off',
-    '@typescript-eslint/no-shadow':'off',
-    'import/newline-after-import': 'off',  // changed to 'warn'
-    'react/jsx-uses-react': 'off',  // changed to 'warn'
-    'react/react-in-jsx-scope': 'off',  // changed to 'warn'
-    'unicorn/filename-case': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',  // changed to 'warn'
+      {
+        ignoreRestSiblings: true,
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
+    '@typescript-eslint/no-empty-interface': [
+      'warn',  // changed to 'warn'
+      {
+        allowSingleExtends: true,
+      },
+    ],
+    '@typescript-eslint/no-shadow': [
+      'warn',  // changed to 'warn'
+      {
+        ignoreOnInitialization: true,
+      },
+    ],
+    'import/newline-after-import': 'warn',  // changed to 'warn'
+    'react/jsx-uses-react': 'warn',  // changed to 'warn'
+    'react/react-in-jsx-scope': 'warn',  // changed to 'warn'
+    'unicorn/filename-case': [
+      'warn',  // changed to 'warn'
+      {
+        cases: {
+          kebabCase: true, // personal style
+          pascalCase: true,
+        },
+      },
+    ],
 
     // Deactivated
     '@typescript-eslint/dot-notation': 'off', // paths are used with a dot notation
