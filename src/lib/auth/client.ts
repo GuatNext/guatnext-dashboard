@@ -1,6 +1,8 @@
 'use client';
 
 import type { User } from '@/types/user';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 function generateToken(): string {
   const arr = new Uint8Array(12);
@@ -37,34 +39,71 @@ export interface ResetPasswordParams {
 }
 
 class AuthClient {
-  async signUp(_: SignUpParams): Promise<{ error?: string }> {
-    // Make API request
+  async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
+    const { email, password } = params;
+    const auth = getAuth();
 
-    // We do not handle the API, so we'll just generate a token and store it in localStorage.
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
+    try {
+      // Sign in with Firebase
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const idToken = await userCredential.user.getIdToken();
+      const uid = userCredential.user.uid;
 
-    return {};
+      console.log(uid);
+      // Fetch user details with the authorization header
+      const response = await fetch(`https://users-qtuc4oxynq-uc.a.run.app/admin/get/${uid}`, {
+        headers: {
+          'Authorization': `Bearer ${idToken}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        return { error: data.message };
+      }
+
+      const user = data.result;
+
+      // Check for required conditions
+      if (user.role !== 'admin') {
+        return { error: 'You do not have the required admin role.' };
+      }
+
+      if (user.status !== 'active') {
+        return { error: 'Your account is not active.' };
+      }
+
+      if (!user.permissions.includes('manage_providers')) {
+        return { error: 'You do not have the required permissions to manage providers.' };
+      }
+
+      localStorage.setItem('custom-auth-token', idToken);
+      localStorage.setItem('uid', uid);
+      localStorage.setItem('email', email);
+      localStorage.setItem('external_login', 'false');
+
+      return {};
+    } catch (error:any) {
+      return { error: error.message };
+    }
   }
+
+
+  async signOut(): Promise<{ error?: string }> {
+    try {
+      await auth.signOut();
+      localStorage.removeItem('custom-auth-token');
+      localStorage.removeItem('uid');
+      return {};
+    } catch (error:any) {
+      return { error: error.message };
+    }
+  }
+
 
   async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
     return { error: 'Social authentication not implemented' };
-  }
-
-  async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
-    const { email, password } = params;
-
-    // Make API request
-
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'sofia@devias.io' || password !== 'Secret1') {
-      return { error: 'Invalid credentials' };
-    }
-
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
   }
 
   async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
@@ -88,11 +127,6 @@ class AuthClient {
     return { data: user };
   }
 
-  async signOut(): Promise<{ error?: string }> {
-    localStorage.removeItem('custom-auth-token');
-
-    return {};
-  }
 }
 
 export const authClient = new AuthClient();
