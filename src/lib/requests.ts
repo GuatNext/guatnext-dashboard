@@ -41,13 +41,13 @@ export const editRequestStatus = async (id: string, status: string, reason?: str
             const token = await user.getIdToken();
             console.log('Token:', token); // Debugging token
   
-            const response = await fetch(`https://users-qtuc4oxynq-uc.a.run.app/providers/update/${id}`, {
+            const response = await fetch(`https://users-qtuc4oxynq-uc.a.run.app/providers/update/`, {
               method: 'PUT',
               headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify(status), // Correctly stringify status and reason
+              body: JSON.stringify({ uid: id, status: status }), // Correctly stringify status and reason
             });
   
             const data = await response.json();
